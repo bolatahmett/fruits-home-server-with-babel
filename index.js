@@ -81,6 +81,11 @@ app.post('/api/getAll', jsonParser, function (req, res) {
     });
 });
 
+app.get('/', (req, res) => {
+    res.send("Server is running");
+})
+
+
 app.listen(3000, () => {
     console.log(`app is listening to port 3000`);
 })
