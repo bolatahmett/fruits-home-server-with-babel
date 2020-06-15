@@ -81,7 +81,7 @@ app.post('/api/getAll', jsonParser, function (req, res) {
     });
 });
 
-app.get('/services', (req, res) => {
+app.get('/api', (req, res) => {
     res.send("Server is running");
 })
 
