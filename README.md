@@ -1,3 +1,4 @@
+[https://fruitshome.ru/api]
 # Beklenen Islevler: 
 - Önyüz ile gelen listeleme,ekleme,silme,güncelleme işlemlerini gerçekleştirmek.
 
