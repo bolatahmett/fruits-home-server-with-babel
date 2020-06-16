@@ -30,55 +30,71 @@ var urlencodedParser = urlencoded({ extended: false });
 var jsonParser = json();
 // POST /login gets urlencoded bodies
 app.post('/api/addItem', jsonParser, function (req, res) {
-    MongoClient.connect(dbUrl, (err, client) => {
-        if (err)
-            throw err;
-        const db = client.db(dbName);
-        db.collection(collection).insertOne(req.body, (err, result) => {
+    try {
+        MongoClient.connect(dbUrl, (err, client) => {
             if (err)
                 throw err;
-            client.close();
-            res.send('success');
+            const db = client.db(dbName);
+            db.collection(collection).insertOne(req.body, (err, result) => {
+                if (err)
+                    throw err;
+                client.close();
+                res.send('success');
+            });
         });
-    });
+    } catch (error) {
+        res.send(error);
+    }
 });
 // POST /api/users gets JSON bodies
 app.post('/api/getItem', jsonParser, function (req, res) {
-    let result = {};
-    MongoClient.connect(dbUrl, (err, client) => {
-        if (err)
-            throw err;
-        const db = client.db(dbName);
-        db.collection(collection).findOne(req, (err, result) => {
+    try {
+        let result = {};
+        MongoClient.connect(dbUrl, (err, client) => {
             if (err)
                 throw err;
-            res.send(result);
-            client.close();
+            const db = client.db(dbName);
+            db.collection(collection).findOne(req, (err, result) => {
+                if (err)
+                    throw err;
+                res.send(result);
+                client.close();
+            });
         });
-    });
+    } catch (error) {
+        res.send(error);
+    }
 });
 // POST /api/users gets JSON bodies
 app.post('/api/removeItem', jsonParser, function (req, res) {
-    MongoClient.connect(dbUrl, (err, client) => {
-        if (err)
-            throw err;
-        const db = client.db(dbName);
-        db.collection(collection).deleteOne(req.body, (err, result) => {
+    try {
+        MongoClient.connect(dbUrl, (err, client) => {
             if (err)
                 throw err;
-            client.close();
-            res.send('success');
+            const db = client.db(dbName);
+            db.collection(collection).deleteOne(req.body, (err, result) => {
+                if (err)
+                    throw err;
+                client.close();
+                res.send('success');
+            });
         });
-    });
+    } catch (error) {
+        res.send(error);
+    }
 });
 app.post('/api/getAll', jsonParser, function (req, res) {
-    MongoClient.connect(dbUrl, { useUnifiedTopology: true }, (err, client) => {
-        if (err)
-            throw err;
-        const db = client.db(dbName);
-        db.collection(collection).find().toArray()
-            .then((docs) => res.send(docs));
-    });
+    try {
+        MongoClient.connect(dbUrl, { useUnifiedTopology: true }, (err, client) => {
+            if (err)
+                throw err;
+            const db = client.db(dbName);
+            db.collection(collection).find().toArray()
+                .then((docs) => res.send(docs));
+        });
+    } catch (error) {
+        res.send(error);
+    }
 });
 
 app.get('/api', (req, res) => {
