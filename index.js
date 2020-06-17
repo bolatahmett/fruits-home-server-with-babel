@@ -31,7 +31,7 @@ var jsonParser = json();
 // POST /login gets urlencoded bodies
 app.post('/api/addItem', jsonParser, function (req, res) {
     try {
-        MongoClient.connect(dbUrl, (err, client) => {
+        MongoClient.connect(dbUrl, { useUnifiedTopology: true }, (err, client) => {
             if (err)
                 throw err;
             const db = client.db(dbName);
@@ -50,11 +50,11 @@ app.post('/api/addItem', jsonParser, function (req, res) {
 app.post('/api/getItem', jsonParser, function (req, res) {
     try {
         let result = {};
-        MongoClient.connect(dbUrl, (err, client) => {
+        MongoClient.connect(dbUrl, { useUnifiedTopology: true }, (err, client) => {
             if (err)
                 throw err;
             const db = client.db(dbName);
-            db.collection(collection).findOne(req, (err, result) => {
+            db.collection(collection).findOne(req.body, (err, result) => {
                 if (err)
                     throw err;
                 res.send(result);
@@ -68,15 +68,16 @@ app.post('/api/getItem', jsonParser, function (req, res) {
 // POST /api/users gets JSON bodies
 app.post('/api/removeItem', jsonParser, function (req, res) {
     try {
-        MongoClient.connect(dbUrl, (err, client) => {
+        MongoClient.connect(dbUrl, { useUnifiedTopology: true }, (err, client) => {
             if (err)
                 throw err;
             const db = client.db(dbName);
-            db.collection(collection).deleteOne(req.body, (err, result) => {
+            console.log(req.body);
+            db.collection(collection).deleteMany(req.body, (err, result) => {
                 if (err)
                     throw err;
                 client.close();
-                res.send('success');
+                res.send(result);
             });
         });
     } catch (error) {
