@@ -56,7 +56,7 @@ app.post('/api/getItem', jsonParser, function (req, res) {
                 throw err;
             const db = client.db(dbName);
             console.log(req.body);
-            db.collection(collection).find(req.body).then((docs) => res.send(docs));
+            db.collection(collection).find(req.body).toArray().then((docs) => res.send(docs));
         });
     } catch (error) {
         res.send(error);
